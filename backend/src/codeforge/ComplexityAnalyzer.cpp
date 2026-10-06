@@ -48,7 +48,6 @@ namespace codeforge
         std::string name;
         std::string time;
         std::string space;
-        std::string reason;
         int score = 0;
         int graphIndex = -1;
     };
@@ -435,7 +434,6 @@ namespace codeforge
             report.time = "O(V + E)";
             report.space = "O(V)";
             report.score = 45;
-            report.reason = "visited graph traversal";
             return report;
         }
 
@@ -445,7 +443,6 @@ namespace codeforge
             {
                 report.time = "O(h), O(log n) balanced, O(n) worst";
                 report.space = "O(1)";
-                report.reason = "iterative binary-tree descent";
                 report.score = 25;
                 return report;
             }
@@ -453,7 +450,6 @@ namespace codeforge
             {
                 report.time = "O(?)";
                 report.space = "O(?)";
-                report.reason = "indirect recursion cycle found by DFS";
                 report.score = 10;
             }
             return report;
@@ -505,59 +501,48 @@ namespace codeforge
             report.time = "O(h), O(log n) balanced, O(n) worst";
             report.space = "O(h), O(log n) balanced, O(n) worst";
             report.score = 30;
-            report.reason = "recursive binary-tree descent";
         }
         else if (calls.size() >= 2 && !allHalve && linearHelperWork)
         {
             report.time = "O(n log n) average, O(n^2) worst";
             report.space = "O(log n) average, O(n) worst";
             report.score = 50;
-            report.reason = "two-way partition recurrence";
         }
         else if (recursiveInsideLoop && allDecrease)
         {
             report.time = "O(n!)";
             report.space = "O(n)";
             report.score = 100;
-            report.reason = "T(n) = nT(n-1) + local work";
         }
         else if (calls.size() >= 2 && allDecrease)
         {
             report.time = "O(2^n)";
             report.space = "O(n)";
             report.score = 90;
-            report.reason = "branching T(n) = 2T(n-1) + local work";
         }
         else if (calls.size() >= 2 && allHalve)
         {
             report.time = linearLocal ? "O(n log n)" : "O(n)";
             report.space = linearHelperSpace ? "O(n)" : "O(log n)";
             report.score = linearLocal ? 50 : 35;
-            report.reason = linearLocal ? "T(n) = 2T(n/2) + O(n)"
-                                        : "T(n) = 2T(n/2) + O(1)";
         }
         else if (calls.size() == 1 && allHalve)
         {
             report.time = linearLocal ? "O(n)" : "O(log n)";
             report.space = "O(log n)";
             report.score = linearLocal ? 30 : 15;
-            report.reason = linearLocal ? "T(n) = T(n/2) + O(n)"
-                                        : "T(n) = T(n/2) + O(1)";
         }
         else if (calls.size() == 1 && allDecrease)
         {
             report.time = linearLocal ? "O(n^2)" : "O(n)";
             report.space = "O(n)";
             report.score = linearLocal ? 40 : 20;
-            report.reason = linearLocal ? "T(n) = T(n-1) + O(n)"
-                                        : "T(n) = T(n-1) + O(1)";
         }
         else
         {
             report.time = "O(?)";
             report.space = "O(?)";
             report.score = 10;
-            report.reason = "unsupported recurrence";
         }
         return report;
     }
