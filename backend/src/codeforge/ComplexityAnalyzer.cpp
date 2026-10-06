@@ -131,12 +131,11 @@ namespace codeforge
             const int closeParenthesis = matching[i + 1];
             if (closeParenthesis < 0)
                 continue;
-            const std::size_t next = static_cast<std::size_t>(closeParenthesis) + 1;
+            const std::size_t next = closeParenthesis + 1;
             if (next >= tokens.size() || tokens[next].text != "{" ||
                 matching[next] < 0)
                 continue;
-            functions.push_back({tokens[i].text, next + 1,
-                                 static_cast<std::size_t>(matching[next])});
+            functions.push_back({tokens[i].text, next + 1, (std::size_t)matching[next]});
             i = next;
         }
         return functions;
@@ -150,12 +149,13 @@ namespace codeforge
             return start;
         if (tokens[start].text == "{" && matching[start] >= 0)
         {
-            return static_cast<std::size_t>(matching[start]);
+            return matching[start];
         }
-        if ((tokens[start].text == "for" || tokens[start].text == "while" ||
-             tokens[start].text == "if") &&
+        if (
+            (tokens[start].text == "for" || tokens[start].text == "while" || tokens[start].text == "if") &&
             start + 1 < limit &&
-            tokens[start + 1].text == "(" && matching[start + 1] >= 0)
+            tokens[start + 1].text == "(" && matching[start + 1] >= 0
+        )
         {
             return statementEnd(tokens, matching,
                                 static_cast<std::size_t>(matching[start + 1]) + 1,
@@ -236,7 +236,7 @@ namespace codeforge
                 continue;
             if (tokens[i + 1].text != "(" || matching[i + 1] < 0)
                 continue;
-            const std::size_t headerEnd = static_cast<std::size_t>(matching[i + 1]);
+            const std::size_t headerEnd = matching[i + 1];
             const std::size_t bodyStart = headerEnd + 1;
             if (bodyStart >= end)
                 continue;
@@ -349,7 +349,7 @@ namespace codeforge
         return false;
     }
 
-    void detectStructures(const std::vector<Token> &tokens, AnalysisResult &result)
+    void  detectStructures(const std::vector<Token> &tokens, AnalysisResult &result)
     {
         const std::vector<std::pair<std::string, std::string>> types = {
             {"vector", "Vector"}, {"list", "Linked List"}, {"forward_list", "Linked List"}, {"stack", "Stack"}, {"queue", "Queue"}, {"deque", "Deque"}, {"priority_queue", "Heap"}, {"unordered_map", "Hash Table"}, {"unordered_set", "Hash Table"}, {"map", "Binary Search Tree"}, {"set", "Binary Search Tree"}};
@@ -371,8 +371,7 @@ namespace codeforge
             addOnce(result.detectedStructures, "Binary Search Tree");
     }
 
-    CallGraph buildCallGraph(const std::vector<Token> &tokens,
-                             const std::vector<FunctionRange> &functions)
+    CallGraph buildCallGraph(const std::vector<Token> &tokens, const std::vector<FunctionRange> &functions)
     {
         CallGraph graph;
         for (const FunctionRange &function : functions)
@@ -602,8 +601,7 @@ namespace codeforge
         {
             if (!isReachable(report.graphIndex))
                 continue;
-            const std::vector<int> path = graph.shortestPath(algorithmIndex,
-                                                             report.graphIndex);
+            const std::vector<int> path = graph.shortestPath(algorithmIndex, report.graphIndex);
             if (!path.empty())
             {
                 dominant = &report;
