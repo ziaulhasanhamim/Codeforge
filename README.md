@@ -2,6 +2,14 @@
 
 CODEFORGE estimates the time and space complexity of a C++ function named `algorithm`. It tokenizes submitted source code, identifies selected loops, recursion patterns, algorithms, and data structures, and returns an estimate through a Crow HTTP API. The estimates are heuristic; they are not a proof of complexity for arbitrary C++ programs.
 
+## Team
+
+A two-person group project.
+
+| Member | GitHub | Role |
+|---|---|---|
+| Sakiful Siam | [@SakifulSiam](https://github.com/SakifulSiam) | Backend: complexity analysis engine and API |
+| Ziaul Hasan Hamim | [@ziaulhasanhamim](https://github.com/ziaulhasanhamim) | Frontend |
 ## Requirements
 
 - A C++17 compiler
